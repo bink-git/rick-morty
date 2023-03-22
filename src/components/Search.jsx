@@ -1,11 +1,12 @@
 import React from 'react';
+import styles from './Search.module.css';
 
 const Search = ({ setSearch }) => {
   return (
-    <form className="search">
-      <div className="search-icon"></div>
+    <form className={styles.search}>
+      <div className={styles['search-icon']}></div>
       <input
-        className="search-input"
+        className={styles['search-input']}
         type="text"
         placeholder="Filter by name..."
         onChange={(e) => {
