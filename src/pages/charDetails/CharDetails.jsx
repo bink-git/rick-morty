@@ -1,47 +1,72 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import axios from 'axios';
+
+import styles from './CharDetails.module.css';
+
+const useCharacter = (id) => {
+  const [character, setCharacter] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `https://rickandmortyapi.com/api/character/${id}`
+        );
+        setCharacter(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  return character;
+};
 
 const CharDetails = () => {
-  const contact = {
-    first: 'Your',
-    last: 'Name',
-    avatar: 'https://placekitten.com/g/200/200',
-    twitter: 'your_handle',
-    notes: 'Some notes',
-    favorite: true,
-  };
+  const { id } = useParams();
+  const character = useCharacter(id);
+  const { name, image, gender, status, species, type, origin = {} } = character;
 
   return (
-    <div id="contact">
+    <div className={styles.charDetails}>
       <Link to="/">
-        <p>Go home</p>
+        <div className={styles.arrow}>
+          <img src="./img/arrow_back.svg" alt="" />
+          <p>Go back</p>
+        </div>
       </Link>
-      <div>
-        <img key={contact.avatar} src={contact.avatar || null} />
-      </div>
 
-      <div>
-        <h1>
-          {contact.first || contact.last ? (
-            <>
-              {contact.first} {contact.last}
-            </>
-          ) : (
-            <i>No Name</i>
-          )}{' '}
-        </h1>
+      <div className={styles.details}>
+        <img key={image} src={image} className={styles.detailsImage} />
 
-        {contact.twitter && (
-          <p>
-            <a target="_blank" href={`https://twitter.com/${contact.twitter}`}>
-              {contact.twitter}
-            </a>
-          </p>
-        )}
+        <h2 className={styles.detailsName}>{name}</h2>
 
-        {contact.notes && <p>{contact.notes}</p>}
-
-        <div></div>
+        <p className={styles.info}>Informations</p>
+        <ul className={styles.detailsList}>
+          <li>
+            <p className={styles.detailsTitle}>Gender</p>
+            <p className={styles.detailsDescr}>{gender}</p>
+          </li>
+          <li>
+            <p className={styles.detailsTitle}>Status</p>
+            <p className={styles.detailsDescr}>{status}</p>
+          </li>
+          <li>
+            <p className={styles.detailsTitle}>Specie</p>
+            <p className={styles.detailsDescr}>{species}</p>
+          </li>
+          <li>
+            <p className={styles.detailsTitle}>Origin</p>
+            <p className={styles.detailsDescr}>{origin.name}</p>
+          </li>
+          <li>
+            <p className={styles.detailsTitle}>Type</p>
+            <p className={styles.detailsDescr}>{type}</p>
+          </li>
+        </ul>
       </div>
     </div>
   );

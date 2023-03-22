@@ -14,7 +14,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: 'charDetails/:cardId',
+    path: '/:id',
     element: <CharDetails />,
   },
 ]);

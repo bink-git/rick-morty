@@ -10,7 +10,6 @@ import Search from './components/Search';
 function App() {
   const [chars, setChars] = useState([]);
   const [search, setSearch] = useState('');
-  console.log(chars);
 
   let api = `https://rickandmortyapi.com/api/character/?page=1&name=${search}`;
 
