@@ -4,11 +4,13 @@ import axios from 'axios';
 
 import styles from './CharDetails.module.css';
 
-const useCharacter = (id) => {
+const CharDetails = () => {
+  const { id } = useParams();
   const [character, setCharacter] = useState({});
+  const { name, image, gender, status, species, type, origin = {} } = character;
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchCharacter = async () => {
       try {
         const response = await axios.get(
           `https://rickandmortyapi.com/api/character/${id}`
@@ -19,16 +21,8 @@ const useCharacter = (id) => {
       }
     };
 
-    fetchData();
+    fetchCharacter();
   }, [id]);
-
-  return character;
-};
-
-const CharDetails = () => {
-  const { id } = useParams();
-  const character = useCharacter(id);
-  const { name, image, gender, status, species, type, origin = {} } = character;
 
   return (
     <div className={styles.charDetails}>
@@ -55,7 +49,7 @@ const CharDetails = () => {
             <p className={styles.detailsDescr}>{status}</p>
           </li>
           <li>
-            <p className={styles.detailsTitle}>Specie</p>
+            <p className={styles.detailsTitle}>Species</p>
             <p className={styles.detailsDescr}>{species}</p>
           </li>
           <li>
